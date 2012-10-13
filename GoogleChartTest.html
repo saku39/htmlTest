@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Google Chart Tools</title>
+<script src="https://www.google.com/jsapi"></script>
+<script>
+    google.load('visualization', '1.0', {'packages':['corechart']});
+    google.setOnLoadCallback(drawChart);
+    
+    function drawChart() {
+        var query = new google.visualization.Query('https://docs.google.com/spreadsheet/pub?key=0AkGfsLytWoUQdGtubk9WRnRYclkyTG8zSFRvVDJNbWc&single=true&gid=0&output=html');
+        query.send(handleQueryResponse);
+    }
+    
+    function handleQueryResponse(response) {
+        if (response.isError()) {
+            alert('Error!' + response.getMessage() + '' + response.getDetailedMessage());
+            return;
+        }
+        
+        var options = {
+            title: 'Google Chart Test1!',
+            width: 500,
+            height: 500
+        }
+
+        var data = response.getDataTable();
+        var LineChart = new google.visualization.LineChart(document.getElementById('LineChart'));
+        LineChart.draw(data, options);
+
+        var ColumnChart = new google.visualization.ColumnChart(document.getElementById('ColumnChart'));
+        ColumnChart.draw(data, options);
+
+        var BarChart = new google.visualization.BarChart(document.getElementById('BarChart'));
+        BarChart.draw(data, options);
+        
+    }
+</script>
+</head>
+<body>
+    <div id="LineChart"></div>
+    <div id="ColumnChart"></div>
+    <div id="BarChart"></div>
+</body>
+</html>
